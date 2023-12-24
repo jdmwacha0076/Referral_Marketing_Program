@@ -7,7 +7,7 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    referralCode: '', 
+    referralCode: '',
   });
 
   const navigate = useNavigate();
@@ -39,9 +39,9 @@ const Login = () => {
         const queryParams = new URLSearchParams(location.search);
         const referrerUserId = queryParams.get('referrerUserId');
 
-        
+
         if (referrerUserId) {
-          
+
           console.log('Referee associated with Referrer. Referrer User ID:', referrerUserId);
         }
 
