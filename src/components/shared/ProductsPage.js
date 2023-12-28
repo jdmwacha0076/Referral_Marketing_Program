@@ -1,56 +1,143 @@
-// ProductsPage.js
-import React from 'react';
-import { FaShoppingCart } from 'react-icons/fa';
+import React, { useState } from 'react';
 import CommonLayout from './CommonLayout';
-import '../styles.css';
+import '../styless.css';
 
+const agriculturalProducts = [
+  {
+    id: 1,
+    name: 'Wheat',
+    type: 'Grain',
+    price: 2.5,
+    description: 'High-quality wheat harvested in Farmville. Perfect for baking and cooking.',
+    image: 'oil.webp',
+  },
+  {
+    id: 2,
+    name: 'Wheat',
+    type: 'Grain',
+    price: 2.5,
+    description: 'High-quality wheat harvested in Farmville. Perfect for baking and cooking.',
+    image: 'camera.jpeg',
+  },
+  {
+    id: 3,
+    name: 'Wheat',
+    type: 'Grain',
+    price: 2.5,
+    description: 'High-quality wheat harvested in Farmville. Perfect for baking and cooking.',
+    image: 'earphones.webp',
+  },
+  {
+    id: 4,
+    name: 'Wheat',
+    type: 'Grain',
+    price: 2.5,
+    description: 'High-quality wheat harvested in Farmville. Perfect for baking and cooking.',
+    image: 'laptop.jpeg',
+  },
+  {
+    id: 5,
+    name: 'Wheat',
+    type: 'Grain',
+    price: 2.5,
+    description: 'High-quality wheat harvested in Farmville. Perfect for baking and cooking.',
+    image: 'screen.webp',
+  },
+  {
+    id: 6,
+    name: 'Apples',
+    type: 'Fruit',
+    price: 3.0,
+    description: 'Fresh and juicy apples grown in Green Fields. Ideal for snacks and desserts.',
+    image: 'tshirt.webp',
+  },
+  {
+    id: 7,
+    name: 'Apples',
+    type: 'Fruit',
+    price: 3.0,
+    description: 'Fresh and juicy apples grown in Green Fields. Ideal for snacks and desserts.',
+    image: 'trouser.webp',
+  },
+  {
+    id: 8,
+    name: 'Apples',
+    type: 'Fruit',
+    price: 3.0,
+    description: 'Fresh and juicy apples grown in Green Fields. Ideal for snacks and desserts.',
+    image: 'belt.jpeg',
+  },
+];
 
-const ProductsPage = () => {
+const AgriculturePage = () => {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [paymentAmount, setPaymentAmount] = useState('');
 
-    const products = [
+  const handlePurchasePaypal = () => {
+    // Implement PayPal API integration for payment
+    console.log('Processing PayPal purchase for:', selectedProduct, 'Amount:', paymentAmount);
+    // Reset state after processing
+    setShowPaymentForm(false);
+    setPaymentAmount('');
+  };
 
-        { id: 1, name: 'Product 1', price: 20 },
-        { id: 2, name: 'Product 2', price: 30 },
-        { id: 3, name: 'Product 3', price: 25 },
-        { id: 4, name: 'Product 4', price: 15 },
-        { id: 5, name: 'Product 5', price: 40 },
-        { id: 6, name: 'Product 6', price: 22 },
-        { id: 7, name: 'Product 7', price: 18 },
-        { id: 8, name: 'Product 8', price: 28 },
-        { id: 9, name: 'Product 9', price: 35 },
-        { id: 10, name: 'Product 10', price: 26 },
-        { id: 11, name: 'Product 11', price: 32 },
-        { id: 12, name: 'Product 12', price: 19 },
-    ];
-
-    const handlePurchasePaypal = () => {
-        // Implement PayPal purchase logic
-        console.log('Processing PayPal purchase...');
-    };
-
-    const handlePurchaseReferralCode = () => {
-        // Implement referral code purchase logic
-        console.log('Processing purchase with referral code...');
-    };
-
-    return (
-        <CommonLayout>
-
-            <div className="product-container">
-                {products.map(product => (
-                    <div key={product.id} className="product-card">
-                        <FaShoppingCart size={40} className="product-icon" />
-                        <h3>{product.name}</h3>
-                        <p>Price: ${product.price}</p>
-                        <div className="product-buttons">
-                            <button onClick={handlePurchasePaypal}>Purchase with PayPal</button>
-                            <button onClick={handlePurchaseReferralCode}>Purchase with Referral Code</button>
-                        </div>
-                    </div>
-                ))}
+  return (
+    <CommonLayout>
+      <div className="agricultural-product-container">
+        {agriculturalProducts.map((product) => (
+          <div key={product.id} className="agricultural-product-card">
+            <img
+              src={process.env.PUBLIC_URL + `/images/${product.image}`}
+              alt={product.name}
+              className="product-image"
+            />
+            <h3>{product.name}</h3>
+            <p>Type: {product.type}</p>
+            <p>Price: ${product.price.toFixed(2)}</p>
+            <p>Description: {product.description}</p>
+            <div className="product-buttons">
+              <button
+                onClick={() => {
+                  setSelectedProduct(product);
+                  setShowPaymentForm(true);
+                }}
+              >
+                Purchase with Code or Link
+              </button>
             </div>
-        </CommonLayout>
-    );
+          </div>
+        ))}
+      </div>
+
+      {showPaymentForm && (
+        <div className="overlay">
+          <div className="modal">
+            <form
+              className="payment-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handlePurchasePaypal();
+              }}
+            >
+              <label htmlFor="paymentAmount">Enter Amount for {selectedProduct.name}: $</label>
+              <input
+                type="text"
+                id="paymentAmount"
+                value={paymentAmount}
+                onChange={(e) => setPaymentAmount(e.target.value)}
+                required
+              />
+              <div className="form-buttons">
+                <button type="submit">Submit Payment</button>
+                <button onClick={() => setShowPaymentForm(false)}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </CommonLayout>
+  );
 };
 
-export default ProductsPage;
+export default AgriculturePage;
