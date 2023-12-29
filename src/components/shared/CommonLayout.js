@@ -20,7 +20,7 @@ const CommonLayout = ({ children }) => {
             <div className="reward-icon">
 
             </div>
-            <span>Rewards: 10</span>
+            <span>Rewards: 102</span>
           </div>
         </div>
       </div>
